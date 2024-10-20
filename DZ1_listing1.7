@@ -36,3 +36,27 @@ thread_2.join()
 thread_end = time.time()
 print(f'Многопоточное выполнение заняло {thread_end - thread_start:.4f} с.')
 
+
+
+
+
+
+import time
+from functools import wraps
+def timethis(func):
+ @wraps(func)
+ def wrapper(*args, **kwargs):
+ start = time.time()
+ result = func(*args, **kwargs)
+ end = time.time()
+ print(func.__name__, end-start)
+ return result
+ return wrapper
+
+ def f(x, y):
+             return x * y
+ result = f(7, 8)
+ print(result)
+ 
+
+ 
