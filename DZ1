@@ -38,9 +38,6 @@ print(f'Многопоточное выполнение заняло {thread_end
 
 
 
-
-
-
 import time
 from functools import wraps
 def timethis(func):
@@ -57,6 +54,8 @@ def timethis(func):
              return x * y
  result = f(7, 8)
  print(result)
+
+ 
  
 
  
