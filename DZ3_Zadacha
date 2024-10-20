@@ -1,0 +1,48 @@
+import time 
+import tracemalloc
+from multiprocessing import Pool
+
+def process_combinations(d, o, g, c, a, t):  
+    x1 = 100 * d + 10 * o + g  
+    x2 = 100 * c + 10 * a + t  
+    x3 = x1 + x2  
+    return (x1, x2, x3) 
+
+def combinations():
+    for d in [1,2,3]:
+        for o in [1,2,3]:
+            for g in [1,2,3]:
+                for c in [1,2,3]:
+                    for a in [1,2,3]:
+                        for t in [1,2,3]:
+                            yield (d, o, g, c, a, t)
+
+def main():
+    # Отслеживаем использование памяти
+    tracemalloc.start()
+
+    # Определяем начало времени выполнения
+    start_time = time.time()
+
+    # Используем 2 процессора для параллельных вычислений
+    with Pool(processes=2) as pool:
+        results = pool.starmap(process_combinations, combinations())
+
+    # Определяем окончание времени выполнения
+    end_time = time.time()
+
+    # Получаем объем использования памяти
+    current, peak = tracemalloc.get_traced_memory()
+
+    # Останавливаем отслеживание памяти
+    tracemalloc.stop()
+
+    # Выводим результаты для каждой комбинации
+    for result in results:
+        print(f'x1: {result[0]}, x2: {result[1]}, x3: {result[2]}')
+
+    print(f"Время выполнения: {end_time - start_time:.2f} секунд")
+    print(f"Текущий объем использования памяти: {current / (1024 * 1024):.2f} МБ; Максимальный объем использования памяти: {peak / (1024 * 1024):.2f} МБ")
+
+main()
+
